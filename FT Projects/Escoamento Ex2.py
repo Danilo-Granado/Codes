@@ -9,13 +9,15 @@
 #with a constant speed of 2.5 m/s. Consider the fisical properties
 #of the exhaust gas to be equal to air properties.
 
+#Used both barycentric and krogh interpolations, produced very similar results
+
 from cmath import pi
 import pandas as pd
 import numpy as np
-from scipy import krogh_interpolate
+from scipy.interpolate import krogh_interpolate
 
 #File path for csv with relevant material properties
-file_path = "C:/Users/danil/Downloads/props.csv"
+file_path = "FT Projects/props.csv"
 data = pd.read_csv(file_path)
 
 #Known variables (Temperatures in Celsius, corrected to Kelvin)
