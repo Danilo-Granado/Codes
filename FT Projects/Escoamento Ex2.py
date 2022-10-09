@@ -130,7 +130,7 @@ while True:
     Ur = 1/((1/hi)+(1/he))
     dTm = ((Tin - Tinf) - (Tout - Tinf))/np.log((Tin-Tinf)/(Tout-Tinf))
     
-    #Verify q1 == q2 (10% tolerance)
+    #Verify q1 == q2 (10% tolerance, but using 0.1% to test results)
     q1 = Ur * dTm * pi * diam * length
     #print("q1 = "+ str(q1))
     q2 = mdot * Cp * (Tin-Tout)
