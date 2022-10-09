@@ -1,4 +1,13 @@
-#Numeric method for solving 
+#Numeric method for solving for exit temperature,
+#given the known variables below, and the air properties
+
+#Exercise:
+#A pipe with a thin wall, with D = 12 mm and L = 25 m is used to
+#transport exhaust gases from a furnace to the lab, for analysis.
+#The gas enters the pipe at 200 °C with a mass flow of 0.006 kg/s.
+#Autumn winds, at a temperature of 15 °C blow across the tube,
+#with a constant speed of 2.5 m/s. Consider the fisical properties
+#of the exhaust gas to be equal to air properties.
 
 from cmath import pi
 import pandas as pd
@@ -26,15 +35,15 @@ u_list = np.array(data["u"].tolist(), dtype=float)
 Pr_list = np.array(data["Pr"].tolist(), dtype=float)
 
 #Steps:
-#1 - Estimate exit temperature (Tout) and calculate Tavg
+#1 - Estimate exit temperature (Tout) and calculate average temperature (Tavg)
 #1.1 - Find properties for given Tavg
-#2 - Calculate Re and Nu
-#3 - Calculate hi
-#4 - Calculate Tfilm
+#2 - Calculate Re and Nu (Reynolds and Nusselt's adimensionals)
+#3 - Calculate hi (Inner convective coefficient)
+#4 - Calculate film temperature (Tfilm)
 #4.1 - Find properties for given Tfilm
 #5 - Calulate Re and Nu
-#6 - Calculate he
-#7 - Calculate U
+#6 - Calculate he (Outer convective coefficient)
+#7 - Calculate U (Inverse of the sum of the inverses of the termic resistances)
 #8 - Verify q1 == q2 (10% tolerance)
 
 #Step 1 - Estimate exit temperature (Tout) (First guess) and calculate Tavg
