@@ -1,6 +1,8 @@
 #Numeric method for solving for exit temperature,
 #given the known variables below, and the air properties
 
+#Change props.csv according to your substance properties table
+
 #Used both barycentric and krogh interpolations, produced very similar results
 
 from cmath import pi
@@ -59,23 +61,16 @@ while True:
 
     print("Current Tout = " + str(Tout))
     #Step 1.1 - Find properties for given Tavg
-    #Dens = krogh_interpolate(Temp_list, Dens_list, Tavg)
-    #Cp = krogh_interpolate(Temp_list, Cp_list, Tavg)
     Kf = krogh_interpolate(Temp_list, Kf_list, Tavg)*10**-3
-    #Kf = Kf*10**-3
     u = krogh_interpolate(Temp_list, u_list, Tavg)*10**-7
-    #u = u*10**-7
     Pr = krogh_interpolate(Temp_list, Pr_list, Tavg)
 
     #Step 2 - Calculate Re and Nu
     Re = (4*mdot)/(u*pi*diam)
-    #print(Re)
     Nu = 0.023*(Re**0.8)*(Pr**0.3)
-    #print(Nu)
 
     #Step 3 - Calculate hi
     hi = (Nu*Kf)/diam
-    #print(hi)
 
     #Step 4 - Calculate Tfilm
     Tfilm = (Tinf + Tout)/2
@@ -84,9 +79,7 @@ while True:
     Dens = krogh_interpolate(Temp_list, Dens_list, Tfilm)
     Cp = krogh_interpolate(Temp_list, Cp_list, Tfilm)
     Kf = krogh_interpolate(Temp_list, Kf_list, Tfilm)*10**-3
-    #Kf = Kf*10**-3
     u = krogh_interpolate(Temp_list, u_list, Tfilm)*10**-7
-    #u = u*10**-7
     Pr = krogh_interpolate(Temp_list, Pr_list, Tfilm)
 
     #Step 5 - Calculate Re and Nu
@@ -124,10 +117,9 @@ while True:
     
     #Verify q1 == q2 (10% tolerance, but using 0.1% to test results)
     q1 = Ur * dTm * pi * diam * length
-    #print("q1 = "+ str(q1))
     q2 = mdot * Cp * (Tin-Tout)
-    #print("q2 = " + str(q2))
     err = 0.001
+
     if (q1-q2)/q2 > err:
         val = -1
         continue
