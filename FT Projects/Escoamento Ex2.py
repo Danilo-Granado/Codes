@@ -2,6 +2,7 @@
 #given the known variables below, and the air properties
 
 #Change props.csv according to your substance properties table
+#Also pay attention to exponentials in the table (e.g. u*10**7)
 
 #Used both barycentric and krogh interpolations, produced very similar results
 
