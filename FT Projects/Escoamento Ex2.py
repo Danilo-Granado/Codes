@@ -1,14 +1,6 @@
 #Numeric method for solving for exit temperature,
 #given the known variables below, and the air properties
 
-#Exercise:
-#A pipe with a thin wall, with D = 12 mm and L = 25 m is used to
-#transport exhaust gases from a furnace to the lab, for analysis.
-#The gas enters the pipe at 200 °C with a mass flow of 0.006 kg/s.
-#Autumn winds, at a temperature of 15 °C blow across the tube,
-#with a constant speed of 2.5 m/s. Consider the fisical properties
-#of the exhaust gas to be equal to air properties.
-
 #Used both barycentric and krogh interpolations, produced very similar results
 
 from cmath import pi
@@ -21,12 +13,12 @@ file_path = "FT Projects/props.csv"
 data = pd.read_csv(file_path)
 
 #Known variables (Temperatures in Celsius, corrected to Kelvin)
-Tin = 200 + 273.15
-Tinf = 15 + 273.15
-diam = 0.012
-length = 25
-vinf = 2.5
-mdot = 0.006
+Tin = 600 + 273.15
+Tinf = 25 + 273.15
+diam = 0.5
+length = 6
+vinf = 5
+mdot = 0.5
 
 #Properties from csv converted to lists
 Temp_list = np.array(data["Temp"].tolist(), dtype=float)
@@ -49,7 +41,7 @@ Pr_list = np.array(data["Pr"].tolist(), dtype=float)
 #8 - Verify q1 == q2 (10% tolerance)
 
 #Step 1 - Estimate exit temperature (Tout) (First guess) and calculate Tavg
-Tout = (Tin + Tinf)/2
+Tout = (Tin + Tinf)*2/3
 Tavg = (Tin + Tout)/2
 
 val = 0
@@ -57,9 +49,9 @@ val = 0
 while True:
     #Step 1 - Estimate exit temperature (Tout) and calculate Tavg
     if val == 1:
-        Tout = (Tout-273.15)*1.0000001 + 273.15
+        Tout = (Tout-273.15)*1.00001 + 273.15
     elif val == -1:
-        Tout = (Tout-273.25)*0.999999 + 273.15
+        Tout = (Tout-273.25)*0.99999 + 273.15
     else:
         Tout = Tout
 
@@ -69,10 +61,10 @@ while True:
     #Step 1.1 - Find properties for given Tavg
     #Dens = krogh_interpolate(Temp_list, Dens_list, Tavg)
     #Cp = krogh_interpolate(Temp_list, Cp_list, Tavg)
-    Kf = krogh_interpolate(Temp_list, Kf_list, Tavg)
-    Kf = Kf*10**-3
-    u = krogh_interpolate(Temp_list, u_list, Tavg)
-    u = u*10**-6
+    Kf = krogh_interpolate(Temp_list, Kf_list, Tavg)*10**-3
+    #Kf = Kf*10**-3
+    u = krogh_interpolate(Temp_list, u_list, Tavg)*10**-7
+    #u = u*10**-7
     Pr = krogh_interpolate(Temp_list, Pr_list, Tavg)
 
     #Step 2 - Calculate Re and Nu
@@ -91,10 +83,10 @@ while True:
     #Step 4.1 - Find properties for given Tfilm 
     Dens = krogh_interpolate(Temp_list, Dens_list, Tfilm)
     Cp = krogh_interpolate(Temp_list, Cp_list, Tfilm)
-    Kf = krogh_interpolate(Temp_list, Kf_list, Tfilm)
-    Kf = Kf*10**-3
-    u = krogh_interpolate(Temp_list, u_list, Tfilm)
-    u = u*10**-6
+    Kf = krogh_interpolate(Temp_list, Kf_list, Tfilm)*10**-3
+    #Kf = Kf*10**-3
+    u = krogh_interpolate(Temp_list, u_list, Tfilm)*10**-7
+    #u = u*10**-7
     Pr = krogh_interpolate(Temp_list, Pr_list, Tfilm)
 
     #Step 5 - Calculate Re and Nu
